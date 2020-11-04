@@ -1,101 +1,78 @@
-# HTML tutorial https://www.w3schools.com/html/default.asp
+"""
+This file contains a run function that takes as input the link to an indeed.com list of jobs, and returns a csv with <jobtext>,<jobtype>.
+"""
+
 from bs4 import BeautifulSoup
 import re
 import time
 import requests
 import csv
+import os
+import io
 
-def run(url,pageNum):
+def run(url,page_num, job_type):
 
-    fw=open('ads.txt','w',encoding='utf8') # output file
+    csv_file=open('ads.csv','w',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
 
-    writer=csv.writer(fw,lineterminator='\n')#create a csv writer to write the job ad text and job type for each job
+    writer=csv.writer(csv_file,delimiter=",", lineterminator='\n') # create a csv writer to write the job ad text and job type for each job
     
-    for list_page in range(0,pageNum-1): # for each page 
+    for list_page in range(0,page_num): # for each page 
         
-        print ('page', list_page)
-        html=None
+        print ('Scraping page', str(list_page+1))
 
-        if list_page == 1: 
-            pageLink=url # url for page 1
-        else:
-            pageLink=url+'&start='+str(list_page*10) # make the page url
+        page_link=url+'&start='+str(list_page*10) # make the page url for each page
 
-        for i in range(5): # try 5 times
-
+        for i in range(5): # try 5 times in case connection drops momentarily
             # send a request to access the url
-            response=requests.get(pageLink,headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', })
+            response=requests.get(page_link,headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', })
             if response: # explanation on response codes: https://realpython.com/python-requests/#status-codes
                 break # we got the file, break the loop
             else: time.sleep(2) # wait 2 secs
-            
-   
+
         # all five attempts failed, return  None
         if not response: 
             return None
     
-        list_html = response.text # read in the html
+        list_html = response.text # read in the html of the website ontaining the list of jobs
         
-        listSoup = BeautifulSoup(list_html,'html') # parse the html
+        list_soup = BeautifulSoup(list_html,'html') # parse the html using BS so we can get the links to the specific jobs' sites
 
-        jobs = listSoup.findAll('a', {'target':'_blank', 'data-tn-element':'jobTitle'}) # get the <a> tag that contains the url for each job
+        jobs = list_soup.findAll('a', {'target':'_blank', 'data-tn-element':'jobTitle'}) # get a list of all the <a> tags that contain the url for each job
         
-        for jobAd in jobs:
-            jobURL = str("https://www.indeed.com" + jobAd.get("href"))
-            print(jobURL)
+        for job_idx, job_ad in enumerate(jobs):
+            print("Processing job #", job_idx, "from page", str(list_page+1))
+            job_url = str("https://www.indeed.com" + job_ad.get("href")) # complete the url since only the tail of it is given
 
             for i in range(5): # try 5 times
-                # send a request to access the jobURL
-                response = requests.get(jobURL ,headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', })
+                # send a request to access the job_url
+                response = requests.get(job_url ,headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', })
                 if response: # explanation on response codes: https://realpython.com/python-requests/#status-codes
                     break # we got the file, break the loop
                 else: time.sleep(2) # wait 2 secs
-                
             # all five attempts failed, return  None
             if not response: 
                 return None
                 
-            job_html = response.text # read in the job html
+            job_html = response.text # read in the job html (this is the job page that contains the full text description)
 
-            #TODO: save the html for each ad into a folder
-
-            jobSoup = BeautifulSoup(job_html, 'html')
-
-            job_description = jobSoup.find('div', {'id':'jobDescriptionText'})
-
-            print(job_description.get_text())
-
-            #TODO: save as line into csv with jobtype nexxt to it
-
-                
-
-        """
-        for review in reviews:
-
-            critic, rating, source, text, date ='NA','NA','NA','NA','NA' # initialize critic and text 
+            # as per the deliverables, save the html for each job
+            current_dir = os.path.dirname(os.path.realpath(__file__))
+            if not os.path.exists(os.path.join(current_dir, "jobs")):
+                os.mkdir(os.path.join(current_dir, "jobs"))
             
-            criticChunk = review.find('a',{'href':re.compile('/critic/')})
-            if criticChunk: critic=criticChunk.text.strip()
+            with io.open("jobs/job_" + str(job_idx) + "page_" + str(list_page+1), "w", encoding="utf-8") as html_file:
+                html_file.write(job_html)
+                html_file.close()
+
+            jobSoup = BeautifulSoup(job_html, 'html') # parse the html of the job using beautiful soup so we can retrieve the relevant text
+
+            job_description = jobSoup.find('div', {'id':'jobDescriptionText'}) #find the description of the job 
+
+            writer.writerow([job_description.get_text(), job_type])
+
             
-            ratingChunk = review.find('div', {'class':re.compile('review_icon')})
-            if ratingChunk:
-                if 'fresh' in str(ratingChunk): rating = 'fresh'
-                else: rating = 'rotten'
-                
-            sourceChunk = review.find('em', {'class':'subtle critic-publication'})
-            if sourceChunk: source = sourceChunk.text.strip()
-                            
-            textChunk=review.find('div',{'class':'the_review'})
-            if textChunk: text = textChunk.text.strip()
-            
-            dateChunk = review.find('div', {'class': 'review-date subtle small'})
-            if dateChunk: date = dateChunk.text.strip()            
-            
-            writer.writerow([critic, rating, source, text, date]) # write to file 
-            """            
     print("finished")
-    fw.close()
+    csv_file.close()
 
 
-url= 'https://www.indeed.com/jobs?q=data+engineer&l=Washington,+DC&radius=100&fromage=last&start=0'
-run(url,3)
+run("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 2, "data engineer")
