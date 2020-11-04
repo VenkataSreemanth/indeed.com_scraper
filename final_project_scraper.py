@@ -10,7 +10,7 @@ import csv
 import os
 import io
 
-def run(url,page_num, job_type):
+def run_scraper(url,page_num, job_type):
 
     csv_file=open('ads.csv','w',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
 
@@ -75,4 +75,4 @@ def run(url,page_num, job_type):
     csv_file.close()
 
 
-run("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 2, "data engineer")
+run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 2, "data engineer")
