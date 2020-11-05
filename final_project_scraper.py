@@ -50,17 +50,18 @@ def run_scraper(url,page_num, job_type):
                     break # we got the file, break the loop
                 else: time.sleep(2) # wait 2 secs
             # all five attempts failed, return  None
-            if not response: 
+            if not response:
+                print("The request to get webpage has failed") 
                 return None
                 
             job_html = response.text # read in the job html (this is the job page that contains the full text description)
 
             # as per the deliverables, save the html for each job
             current_dir = os.path.dirname(os.path.realpath(__file__))
-            if not os.path.exists(os.path.join(current_dir, "jobs")):
-                os.mkdir(os.path.join(current_dir, "jobs"))
+            if not os.path.exists(os.path.join(current_dir, str("jobs/" + job_type))):
+                os.mkdir(os.path.join(current_dir, str("jobs/"+job_type))
             
-            with io.open("jobs/job_" + str(job_idx) + "page_" + str(list_page+1), "w", encoding="utf-8") as html_file:
+            with io.open(str("jobs/" + job_type + "/job_" + str(job_idx) + "page_" + str(list_page+1), "w", encoding="utf-8") as html_file:
                 html_file.write(job_html)
                 html_file.close()
 
@@ -75,4 +76,4 @@ def run_scraper(url,page_num, job_type):
     csv_file.close()
 
 
-run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 2, "data engineer")
+run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 10, "data engineer")
