@@ -24,7 +24,7 @@ USER_AGENT_LIST = ["Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, l
 
 def run_scraper(url,page_num, job_type):
 
-upload     csv_file=open('ads_princeton_datascientist.csv','a',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
+    csv_file=open('ads_princeton_datascientist.csv','a',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
 
     writer=csv.writer(csv_file,delimiter=",", lineterminator='\n') # create a csv writer to write the job ad text and job type for each job
     
@@ -106,9 +106,9 @@ upload     csv_file=open('ads_princeton_datascientist.csv','a',encoding='utf8') 
 
 
 # run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 99, "data engineer")
-run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 990, "data engineer")
+# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 990, "data engineer")
 # run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 98, "data engineer")
-# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 94, "software engineer")
+run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 990, "software engineer")
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 93, "software engineer")
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Sacramento%2C+CA&radius=100", 99, "software engineer")
 # run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 69, "data scientist")
