@@ -24,15 +24,17 @@ USER_AGENT_LIST = ["Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, l
 
 def run_scraper(url,page_num, job_type):
 
-    csv_file=open('ads_princeton_datascientist.csv','w',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
+upload     csv_file=open('ads_princeton_datascientist.csv','a',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
 
     writer=csv.writer(csv_file,delimiter=",", lineterminator='\n') # create a csv writer to write the job ad text and job type for each job
     
     if os.path.exists("alreadyseen.txt"):
         with open("alreadyseen.txt", "rb") as fp:
             visited_jobs = pickle.load(fp)
+            print("loaded visited_jobs from file")
     else:
         visited_jobs = set()
+        print("visited_jobs set was not found in the cwd. Creating new set")
 
     for list_page in range(0,page_num): # for each page 
         
@@ -104,7 +106,7 @@ def run_scraper(url,page_num, job_type):
 
 
 # run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 99, "data engineer")
-run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 99, "data engineer")
+run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 990, "data engineer")
 # run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 98, "data engineer")
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 94, "software engineer")
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 93, "software engineer")
