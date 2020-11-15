@@ -22,21 +22,21 @@ USER_AGENT_LIST = ["Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, l
                     "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"] 
 
 
-def run_scraper(url,page_num, job_type):
+def run_scraper(url,start_page_num, end_page_num, job_type):
 
-    csv_file=open('ads_princeton_datascientist.csv','a',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
+    csv_file=open('ads.csv','a',encoding='utf8') # creates and opens a file called ads.txt to place the <jobtext>,<jobtype> one per line
 
     writer=csv.writer(csv_file,delimiter=",", lineterminator='\n') # create a csv writer to write the job ad text and job type for each job
     
     if os.path.exists("alreadyseen.txt"):
         with open("alreadyseen.txt", "rb") as fp:
             visited_jobs = pickle.load(fp)
-            print("loaded visited_jobs from file")
+            print("loaded visited_jobs from file. It contains", len(visited_jobs), "already seen listings")
     else:
         visited_jobs = set()
         print("visited_jobs set was not found in the cwd. Creating new set")
 
-    for list_page in range(0,page_num): # for each page 
+    for list_page in range(start_page_num, end_page_num): # for each page 
         
         print ('Scraping page', str(list_page+1))
 
@@ -108,9 +108,9 @@ def run_scraper(url,page_num, job_type):
 # run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 99, "data engineer")
 # run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 990, "data engineer")
 # run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 98, "data engineer")
-run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 990, "software engineer")
-# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 93, "software engineer")
+# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 990, "software engineer")
+# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 990, "software engineer")
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Sacramento%2C+CA&radius=100", 99, "software engineer")
-# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 69, "data scientist")
-# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Princeton%2C+NJ&radius=100", 67, "data scientist")
-# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Sacramento%2C+CA&radius=100", 68, "data scientist")
+run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 35, 100, "data scientist")
+# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Princeton%2C+NJ&radius=100", 100, "data scientist")
+# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Sacramento%2C+CA&radius=100", 100, "data scientist")
