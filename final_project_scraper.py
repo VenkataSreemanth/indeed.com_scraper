@@ -13,6 +13,7 @@ import pickle
 import random
 
 
+
 USER_AGENT_LIST = ["Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36",
                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
                    "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
@@ -53,9 +54,12 @@ def run_scraper(url,start_page_num, end_page_num, job_type):
         if not response: 
             print("The request to get the AdList webpage has failed") 
             return None
-    
+
+        time.sleep(random.randint(0,4))
+
         list_html = response.text # read in the html of the website ontaining the list of jobs
         
+
         list_soup = BeautifulSoup(list_html,'html') # parse the html using BS so we can get the links to the specific jobs' sites
 
         jobs = list_soup.findAll('a', {'target':'_blank', 'data-tn-element':'jobTitle'}) # get a list of all the <a> tags that contain the url for each job
@@ -78,7 +82,7 @@ def run_scraper(url,start_page_num, end_page_num, job_type):
             if not response:
                 print("The request to get the jobAd webpage has failed") 
                 return None
-                
+            time.sleep(random.randint(0,3))
             job_html = response.text # read in the job html (this is the job page that contains the full text description)
 
             # as per the deliverables, save the html for each job
@@ -105,12 +109,12 @@ def run_scraper(url,start_page_num, end_page_num, job_type):
     csv_file.close()
 
 
-# run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 99, "data engineer")
-# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 990, "data engineer")
-# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 98, "data engineer")
-# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 990, "software engineer")
-# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 990, "software engineer")
-# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Sacramento%2C+CA&radius=100", 99, "software engineer")
-run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 35, 100, "data scientist")
-# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Princeton%2C+NJ&radius=100", 100, "data scientist")
-# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Sacramento%2C+CA&radius=100", 100, "data scientist")
+# run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 0, 99, "data engineer") # sarita ran
+# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 0, 99, "data engineer") # anuja
+# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 0, 98, "data engineer") # anuja
+# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 0, 99, "software engineer") # rajan
+# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 0, 99, "software engineer") #rajan
+# run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Sacramento%2C+CA&radius=100", 0, 99, "software engineer") #keerthi
+run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 68, 100, "data scientist") #sarita ran
+# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Princeton%2C+NJ&radius=100", 0, 100, "data scientist") # keerthi
+# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Sacramento%2C+CA&radius=100", 0, 100, "data scientist") # pranay
