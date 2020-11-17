@@ -99,8 +99,7 @@ def run_scraper(url,start_page_num, end_page_num, job_type):
             job_description = jobSoup.find('div', {'id':'jobDescriptionText'}) #find the description of the job 
             if job_description != None:
                 writer.writerow([job_description.get_text(), job_type])
-            
-            visited_jobs.add(job_url)
+                visited_jobs.add(job_url)
 
     with open("alreadyseen.txt", "wb") as fp:
         pickle.dump(visited_jobs, fp)
