@@ -108,12 +108,12 @@ def run_scraper(url,start_page_num, end_page_num, job_type):
     csv_file.close()
 
 
-# run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 0, 99, "data engineer") # sarita ran
+# run_scraper("https://www.indeed.com/jobs?q=Data+Engineer&l=Washington%2C+DC&radius=100", 30, 99, "data engineer") # sarita ran
 # run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Princeton%2C+NJ&radius=100", 0, 99, "data engineer") # anuja
-# run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 0, 98, "data engineer") # anuja
+run_scraper("https://www.indeed.com/jobs?q=data+engineer&l=Sacramento%2C+CA&radius=100", 16, 98, "data engineer") # anuja (sarita ran 0-18)
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Washington%2C+DC&radius=100", 0, 99, "software engineer") # rajan
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Princeton%2C+NJ&radius=100", 0, 99, "software engineer") #rajan
 # run_scraper("https://www.indeed.com/jobs?q=software+engineer&l=Sacramento%2C+CA&radius=100", 0, 99, "software engineer") #keerthi
-run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 68, 100, "data scientist") #sarita ran
+# run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Washington%2C+DC&radius=100", 68, 100, "data scientist") #sarita ran
 # run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Princeton%2C+NJ&radius=100", 0, 100, "data scientist") # keerthi
 # run_scraper("https://www.indeed.com/jobs?q=data+scientist&l=Sacramento%2C+CA&radius=100", 0, 100, "data scientist") # pranay
