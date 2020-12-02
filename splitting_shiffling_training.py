@@ -62,7 +62,7 @@ if __name__ == "__main__":
     #Vectorize the labels: words into 0 or 1 or 2
     y_train_vec, y_test_vec = vectorize_labels(y_train, y_test)
     #Create classifier instance
-    clf = MLPClassifier(alpha=0.001, verbose=True, activation='relu', epochs=15)
+    clf = MLPClassifier(alpha=0.001, verbose=True, activation='relu') #need to add early stopping or something to stop the code
     #train classifier
     history = clf.fit(X_train_vec,y_train_vec)
 
