@@ -37,7 +37,7 @@ if __name__ == "__main__":
     predictors_top3 = [('LREG',LREG_classifier), ('MLP', MLP_classifier), ('SVC', SVC_classifier)]
     
     # choose the set of predictors you want to use from the list above
-    VT=VotingClassifier(predictors_top3, verbose=True)
+    VT=VotingClassifier(predictors_top3, verbose=True, voting = 'hard')
 
     #train all classifier on the same datasets
     VT.fit(X_train_vec,y_train_vec)
@@ -46,5 +46,5 @@ if __name__ == "__main__":
     pred=VT.predict(X_test_vec)
 
     #print accuracy
-    print("The accruacy of the enssemble is:", accuracy_score(y_test_vec, pred))
-    print("\nThe Confusion Matrix of the Ensemmble is:\n", confusion_matrix(y_test_vec, pred))
+    print("The accuracy of the 6-model enssemble is:", accuracy_score(y_test_vec, pred))
+    print("The Confusion Matrix of the 6-model Ensemmble is:", confusion_matrix(y_test_vec, pred))
