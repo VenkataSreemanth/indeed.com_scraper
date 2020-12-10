@@ -37,7 +37,7 @@ if __name__ == "__main__":
     predictors_top3 = [('LREG',LREG_classifier), ('MLP', MLP_classifier), ('SVC', SVC_classifier)]
     
     # choose the set of predictors you want to use from the list above
-    VT=VotingClassifier(predictors_top3)
+    VT=VotingClassifier(predictors_top3, verbose=True)
 
     #train all classifier on the same datasets
     VT.fit(X_train_vec,y_train_vec)
