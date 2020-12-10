@@ -33,9 +33,11 @@ if __name__ == "__main__":
     NB_classifier = GaussianNB(var_smoothing=1e-8)
 
 
-    predictors=[('KNN',KNN_classifier),('LREG',LREG_classifier),('DT',DT_classifier), ('MLP', MLP_classifier), ('SVC', SVC_classifier), ('GNB', NB_classifier)]
-
-    VT=VotingClassifier(predictors)
+    predictors_all = [('KNN',KNN_classifier),('LREG',LREG_classifier),('DT',DT_classifier), ('MLP', MLP_classifier), ('SVC', SVC_classifier), ('GNB', NB_classifier)]
+    predictors_top3 = [('LREG',LREG_classifier), ('MLP', MLP_classifier), ('SVC', SVC_classifier)]
+    
+    # choose the set of predictors you want to use from the list above
+    VT=VotingClassifier(predictors_top3)
 
     #train all classifier on the same datasets
     VT.fit(X_train_vec,y_train_vec)
