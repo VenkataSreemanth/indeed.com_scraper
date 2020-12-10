@@ -29,7 +29,7 @@ if __name__ == "__main__":
     LREG_classifier=LogisticRegression(solver='liblinear', C=0.1, penalty='l2')
     DT_classifier = DecisionTreeClassifier(criterion='entropy', max_depth=12)
     MLP_classifier = MLPClassifier(max_iter=50, activation='relu', learning_rate_init=0.0001, solver='adam')
-    SVC_classifier = SVC(C=0.5, gamma='scaele')
+    SVC_classifier = SVC(C=0.5, gamma='scale')
     NB_classifier = GaussianNB(var_smoothing=1e-8)
 
 
@@ -46,5 +46,5 @@ if __name__ == "__main__":
     pred=VT.predict(X_test_vec)
 
     #print accuracy
-    print("The accruacy of the 6-model enssemble is:", accuracy_score(y_test_vec, pred))
-    print("The Confusion Matrix of the 6-model Ensemmble is:", confusion_matrix(y_test_vec, pred))
+    print("The accruacy of the enssemble is:", accuracy_score(y_test_vec, pred))
+    print("\nThe Confusion Matrix of the Ensemmble is:\n", confusion_matrix(y_test_vec, pred))
